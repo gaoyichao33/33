@@ -12,17 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import sys
 
 
-def Readin( TextAddress ):
-        f = open(TextAddress, "r", encoding="UTF-8")
-        Str = f.read()
-        f.close()
-        return Str
 
-
-def WriteOut(similarity, TextAddress):
-        f = open(TextAddress, "w", encoding="UTF-8")
-        f.write( str(similarity)[0:4] )
-        f.close()
 
 
 class CosineSimilarity(object):
@@ -56,8 +46,7 @@ class CosineSimilarity(object):
         return cut_code
 
     def main(self):
-        # 去除停用词
-        jieba.analyse.set_stop_words('E:/case/stop_word.txt')
+        
 
         # 提取关键词
         keywords1 = self.extract_keyword(self.s1)
@@ -84,15 +73,20 @@ class CosineSimilarity(object):
             return 0.0
 
 
-# 测试
+
 if __name__ == '__main__':
-    content_x = Readin(sys.argv[1])
-    content_y = Readin(sys.argv[2])
+   f = open(sys.argv[1], "r", encoding="UTF-8")
+    content_x = f.read()
+    f.close()
+    g = open(sys.argv[2], "r", encoding="UTF-8")
+    content_y = g.read()
+    g.close()
 
     similarity = CosineSimilarity(content_x, content_y)
     similarity = similarity.main()
-    print(similarity)
-    WriteOut(similarity, sys.argv[3])
-
+    print('相似度: %.2f%%' % (similarity*100))
+    x = open(sys.argv[3], "w", encoding="UTF-8")
+    x.write(str(similarity))
+    x.close()
 
 
